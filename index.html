@@ -1,0 +1,342 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VORTEXSENSI A.I</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#09080d;color:white;font-family:Arial;padding:18px 15px 100px}
+header{padding:28px 10px;background:radial-gradient(circle at top,#702800,transparent 75%)}
+h1{font-size:29px}h1 span,.orange{color:#ff6900}
+p{color:#999;line-height:1.5}
+h2{margin:22px 0 15px}
+.card{background:#171620;border:1px solid #38313c;border-radius:18px;padding:17px;margin:13px 0}
+.page{display:none}.page.active{display:block}
+button{cursor:pointer;font-weight:bold}
+.primary{width:100%;padding:18px;background:#ff6900;color:#140b06;border:0;border-radius:13px;font-size:16px;margin-top:15px}
+.back{background:#29232c;color:white;border:1px solid #48404b;padding:12px 17px;border-radius:11px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.choice{width:100%;background:#1d1b25;color:white;border:1px solid #393540;padding:16px;border-radius:13px;margin:5px 0;text-align:left}
+.choice.selected{background:#3b2118;border-color:#ff6900;color:#ff9b59}
+.choice small{display:block;color:#999;margin-top:6px;font-weight:normal}
+.step{margin:22px 0 12px;font-size:18px;font-weight:bold}
+.step span{color:#ff6900;margin-right:8px}
+input,select{width:100%;padding:15px;background:#100f16;border:1px solid #45404a;color:white;border-radius:11px;margin:8px 0}
+.result{display:none;border:1px solid #ff6900;background:#201710;border-radius:15px;padding:17px;margin-top:18px}
+.value{display:flex;justify-content:space-between;padding:13px 0;border-bottom:1px solid #39313a}
+.value b{color:#ff934d}
+.bottom{position:fixed;bottom:7px;left:4%;width:92%;background:#191720;border:1px solid #39333e;border-radius:18px;display:flex;justify-content:space-around;padding:14px 5px}
+.bottom button{background:none;color:#aaa;border:0}
+.bottom button.active{color:#ff6900}
+.famous{border:1px solid #39313c;border-radius:14px;background:#191720;padding:15px;margin:9px 0;display:flex;align-items:center;gap:12px}
+.famous .emoji{font-size:27px}
+.famous .details{flex:1}
+.famous b{color:white}
+.famous small{display:block;color:#999;margin-top:5px}
+.badge{font-size:11px;color:#ff914c}
+</style>
+</head>
+<body>
+
+<header>
+<h1>⚡ VORTEX<span>SENSI</span> A.I</h1>
+<p>Gerador inteligente de sensibilidade</p>
+</header>
+
+<section class="page active" id="home">
+<h2>🎯 MENU PRINCIPAL</h2>
+<div class="card">
+<h3>Gerador de Sensi Normal</h3>
+<p>Escolha seu aparelho e gere sua configuração.</p>
+<button class="primary" onclick="openPage('gerador')">ABRIR GERADOR</button>
+</div>
+<div class="card">
+<h3>👑 Gerador de Sensi VIP</h3>
+<p>Gere uma configuração personalizada VIP.</p>
+<button class="primary" onclick="openPage('vip')">ABRIR VIP</button>
+</div>
+<div class="card">
+<h3>⭐ Sensi dos Famosos</h3>
+<p>Confira os perfis disponíveis.</p>
+<button class="primary" onclick="openPage('famosos')">VER FAMOSOS</button>
+</div>
+<div class="card">
+<h3>⚡ VortexTrick</h3>
+<button class="primary" onclick="openPage('trick')">ABRIR VORTEXTRICK</button>
+</div>
+</section>
+
+<section class="page" id="gerador">
+<button class="back" onclick="openPage('home')">← VOLTAR</button>
+<h2>🎯 GERADOR DE SENSI</h2>
+
+<div id="normalStep1">
+<div class="step"><span>01</span> Escolha seu dispositivo</div>
+<div class="grid">
+<button class="choice" onclick="chooseOS('Android','normal')">📱 ANDROID</button>
+<button class="choice" onclick="chooseOS('iPhone','normal')">🍎 IPHONE</button>
+</div>
+</div>
+
+<div id="normalStep2" hidden>
+<div class="step"><span>02</span> Escolha a marca</div>
+<div id="normalBrands" class="grid"></div>
+</div>
+
+<div id="normalStep3" hidden>
+<div class="step"><span>03</span> Escolha o modelo</div>
+<div id="normalModels"></div>
+</div>
+
+<div id="normalStep4" hidden>
+<div class="step"><span>04</span> Escolha sua sensibilidade</div>
+<button class="choice" onclick="setLevel('normal','Alta',this)">🔥 ALTA<small>Resposta rápida</small></button>
+<button class="choice" onclick="setLevel('normal','Média',this)">⚖️ MÉDIA<small>Equilibrada</small></button>
+<button class="choice" onclick="setLevel('normal','Baixa',this)">🎯 BAIXA<small>Controle</small></button>
+</div>
+
+<div id="normalStep5" hidden>
+<div class="step"><span>05</span> Escolha o DPI</div>
+<div class="grid">
+<button class="choice" onclick="setDPI('normal','Com DPI',this)">COM DPI</button>
+<button class="choice" onclick="setDPI('normal','Sem DPI',this)">SEM DPI</button>
+</div>
+<div id="normalDpiInput" hidden>
+<input type="number" id="normalDpi" placeholder="Digite o DPI">
+</div>
+<button class="primary" onclick="generate('normal')">✨ GERAR SENSI</button>
+</div>
+
+<div id="normalResult" class="result"></div>
+</section>
+
+<section class="page" id="vip">
+<button class="back" onclick="openPage('home')">← VOLTAR</button>
+<h2>👑 GERADOR VIP</h2>
+
+<div id="vipStep1">
+<div class="step"><span>01</span> Escolha seu dispositivo</div>
+<div class="grid">
+<button class="choice" onclick="chooseOS('Android','vip')">📱 ANDROID</button>
+<button class="choice" onclick="chooseOS('iPhone','vip')">🍎 IPHONE</button>
+</div>
+</div>
+<div id="vipStep2" hidden>
+<div class="step"><span>02</span> Escolha a marca</div>
+<div id="vipBrands" class="grid"></div>
+</div>
+<div id="vipStep3" hidden>
+<div class="step"><span>03</span> Escolha o modelo</div>
+<div id="vipModels"></div>
+</div>
+<div id="vipStep4" hidden>
+<div class="step"><span>04</span> Escolha a sensibilidade VIP</div>
+<button class="choice" onclick="setLevel('vip','Alta',this)">🔥 ALTA VIP</button>
+<button class="choice" onclick="setLevel('vip','Média',this)">⚖️ MÉDIA VIP</button>
+<button class="choice" onclick="setLevel('vip','Baixa',this)">🎯 BAIXA VIP</button>
+</div>
+<div id="vipStep5" hidden>
+<div class="step"><span>05</span> DPI VIP</div>
+<div class="grid">
+<button class="choice" onclick="setDPI('vip','Com DPI',this)">COM DPI</button>
+<button class="choice" onclick="setDPI('vip','Sem DPI',this)">SEM DPI</button>
+</div>
+<div id="vipDpiInput" hidden>
+<input id="vipDpi" type="number" placeholder="Digite o DPI">
+</div>
+<button class="primary" onclick="generate('vip')">👑 GERAR SENSI VIP</button>
+</div>
+<div id="vipResult" class="result"></div>
+</section>
+
+<section class="page" id="famosos">
+<button class="back" onclick="openPage('home')">← VOLTAR</button>
+<h2>⭐ SENSI DOS FAMOSOS</h2>
+<p>Escolha um perfil para ver uma configuração demonstrativa.</p>
+<div id="famousList"></div>
+<div id="famousResult" class="result"></div>
+</section>
+
+<section class="page" id="trick">
+<button class="back" onclick="openPage('home')">← VOLTAR</button>
+<h2>⚡ VORTEXTRICK</h2>
+<p>Todas as opções começam desligadas.</p>
+<div id="trickList"></div>
+<button class="primary" onclick="toggleAll(true)">ATIVAR TODAS</button>
+<button class="choice" onclick="toggleAll(false)">DESATIVAR TODAS</button>
+</section>
+
+<nav class="bottom">
+<button class="active" onclick="openPage('home',this)">⌂<br>Início</button>
+<button onclick="openPage('gerador',this)">🎯<br>Sensi</button>
+<button onclick="openPage('vip',this)">👑<br>VIP</button>
+<button onclick="openPage('famosos',this)">⭐<br>Famosos</button>
+</nav>
+
+<script>
+const devices={
+ Android:{
+ Samsung:['Galaxy A05','Galaxy A12','Galaxy A15','Galaxy A25','Galaxy A35','Galaxy A55','Galaxy S21','Galaxy S22','Galaxy S23','Galaxy S24','Galaxy S25','Galaxy M14','Galaxy M34'],
+ Realme:['C11','C21','C25','C35','C53','C55','C67','Note 50','Note 60','Note 60X','12 Pro','13 Pro'],
+ Motorola:['Moto E13','Moto E22','Moto G14','Moto G24','Moto G34','Moto G54','Moto G84','Edge 40','Edge 50'],
+ Xiaomi:['Redmi 9','Redmi 10','Redmi 12','Redmi 13','Redmi Note 10','Redmi Note 11','Redmi Note 12','Redmi Note 13','Xiaomi 13','Xiaomi 14'],
+ POCO:['POCO C65','POCO M5','POCO M6','POCO X5','POCO X6','POCO F5','POCO F6'],
+ Infinix:['Smart 8','Hot 30','Hot 40','Hot 50','Note 30','Note 40'],
+ Tecno:['Spark 10','Spark 20','Spark 30','Pova 5','Pova 6','Camon 20'],
+ ASUS:['ROG Phone 6','ROG Phone 7','ROG Phone 8','Zenfone 10'],
+ Oppo:['A17','A38','A58','Reno 10','Reno 11'],
+ Vivo:['Y17','Y27','Y36','V29','V30'],
+ Google:['Pixel 6','Pixel 7','Pixel 8','Pixel 9'],
+ Huawei:['P30','P40','P50','Nova 11']
+ },
+ iPhone:{
+ Apple:['iPhone 8','iPhone X','iPhone XR','iPhone 11','iPhone 11 Pro','iPhone 12','iPhone 12 Pro','iPhone 13','iPhone 13 Pro','iPhone 14','iPhone 14 Pro','iPhone 15','iPhone 15 Pro','iPhone 16','iPhone 16 Pro','iPhone 17','iPhone 17 Pro']
+ }
+};
+
+const state={
+ normal:{os:'',brand:'',model:'',level:'',dpi:'',dpiValue:''},
+ vip:{os:'',brand:'',model:'',level:'',dpi:'',dpiValue:''}
+};
+
+function openPage(id,btn){
+ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ document.querySelectorAll('.bottom button').forEach(b=>b.classList.remove('active'));
+ if(btn)btn.classList.add('active');
+ window.scrollTo(0,0);
+}
+
+function chooseOS(os,type){
+ let s=state[type];s.os=os;s.brand='';s.model='';
+ for(let i=2;i<=5;i++)document.getElementById(type+'Step'+i).hidden=true;
+ document.getElementById(type+'Step2').hidden=false;
+ let area=document.getElementById(type+'Brands');
+ area.innerHTML='';
+ Object.keys(devices[os]).forEach(brand=>{
+ let b=document.createElement('button');
+ b.className='choice';b.textContent=brand;
+ b.onclick=()=>chooseBrand(type,brand,b);
+ area.appendChild(b);
+ });
+ document.getElementById(type+'Step2').scrollIntoView({behavior:'smooth'});
+}
+
+function chooseBrand(type,brand,btn){
+ state[type].brand=brand;state[type].model='';
+ btn.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('selected'));
+ btn.classList.add('selected');
+ let area=document.getElementById(type+'Models');
+ area.innerHTML='';
+ devices[state[type].os][brand].forEach(model=>{
+ let b=document.createElement('button');
+ b.className='choice';b.textContent='📱 '+model;
+ b.onclick=()=>chooseModel(type,model,b);
+ area.appendChild(b);
+ });
+ document.getElementById(type+'Step3').hidden=false;
+ document.getElementById(type+'Step4').hidden=true;
+ document.getElementById(type+'Step5').hidden=true;
+ document.getElementById(type+'Step3').scrollIntoView({behavior:'smooth'});
+}
+
+function chooseModel(type,model,btn){
+ state[type].model=model;
+ btn.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('selected'));
+ btn.classList.add('selected');
+ document.getElementById(type+'Step4').hidden=false;
+ document.getElementById(type+'Step4').scrollIntoView({behavior:'smooth'});
+}
+function setLevel(type,level,btn){
+ state[type].level=level;
+ btn.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('selected'));
+ btn.classList.add('selected');
+ document.getElementById(type+'Step5').hidden=false;
+ document.getElementById(type+'Step5').scrollIntoView({behavior:'smooth'});
+}
+function setDPI(type,value,btn){
+ state[type].dpi=value;
+ btn.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('selected'));
+ btn.classList.add('selected');
+ document.getElementById(type+(type==='vip'?'DpiInput':'DpiInput')).hidden=value!=='Com DPI';
+}
+
+function generate(type){
+ let s=state[type];
+ if(!s.dpi){alert('Escolha Com DPI ou Sem DPI.');return}
+ let dpi=document.getElementById(type==='vip'?'vipDpi':'normalDpi').value;
+ if(s.dpi==='Com DPI' && (!dpi||dpi<300||dpi>560)){
+ alert('Digite um DPI válido entre 300 e 560.');return;
+ }
+ s.dpiValue=dpi;
+ let base=s.level==='Alta'?185:s.level==='Média'?150:115;
+ if(type==='vip')base=Math.min(200,base+5);
+ let names=['Geral','Ponto Vermelho','Mira 2x','Mira 4x','Mira AWM','Olhadinha'];
+ let offsets=[0,-15,-20,-30,-65,-45];
+ let html='<h3>🎯 SENSIBILIDADE GERADA</h3>';
+ html+='<p>'+s.os+' • '+s.brand+' • '+s.model+'</p>';
+ html+='<p>'+s.level+' • '+s.dpi+(s.dpi==='Com DPI'?' ('+dpi+')':'')+'</p>';
+ names.forEach((n,i)=>{
+ let val=Math.max(0,Math.min(200,base+offsets[i]));
+ html+='<div class="value"><span>'+n+'</span><b>'+val+'</b></div>';
+ });
+ html+='<button class="primary" onclick="copyText(this)">📋 COPIAR SENSI</button>';
+ let result=document.getElementById(type+'Result');
+ result.innerHTML=html;result.style.display='block';
+ result.scrollIntoView({behavior:'smooth'});
+}
+function copyText(btn){
+ let text=btn.parentElement.innerText.replace('📋 COPIAR SENSI','');
+ navigator.clipboard.writeText(text).then(()=>btn.innerText='✓ COPIADO').catch(()=>alert(text));
+}
+
+/* PERFIS DOS FAMOSOS */
+const famous=[
+ {name:'Marechal',color:'#e94a32',tag:'Vermelho',base:190},
+ {name:'Black',color:'#202020',tag:'Preto',base:185},
+ {name:'N44',color:'#303030',tag:'Preto',base:180},
+ {name:'Nove Deusa',color:'#dfc5e8',tag:'Lilás',base:175},
+ {name:'Drake',color:'#2878dc',tag:'Azul',base:185},
+ {name:'Zinho PH',color:'#2474db',tag:'Blue',base:180},
+ {name:'Nobru',color:'#f5a623',tag:'Laranja',base:185},
+ {name:'Cauan',color:'#42b883',tag:'Verde',base:175},
+ {name:'Bak',color:'#8738bc',tag:'Roxo',base:180},
+ {name:'Two9',color:'#dd4141',tag:'Vermelho',base:180}
+];
+const famousList=document.getElementById('famousList');
+famous.forEach((f,i)=>{
+ let b=document.createElement('button');
+ b.className='famous';b.style.width='100%';b.style.textAlign='left';
+ b.innerHTML='<span class="emoji">⭐</span><span class="details"><b>'+f.name+'</b><small>'+f.tag+' • Perfil demonstrativo</small></span><span>›</span>';
+ b.onclick=()=>famousGenerate(i);
+ famousList.appendChild(b);
+});
+function famousGenerate(i){
+ let f=famous[i];
+ let html='<h3>'+f.name+' • SENSI</h3>';
+ ['Geral','Ponto Vermelho','Mira 2x','Mira 4x','Mira AWM','Olhadinha'].forEach((n,j)=>{
+ let val=Math.max(0,Math.min(200,f.base-[0,15,20,30,65,45][j]));
+ html+='<div class="value"><span>'+n+'</span><b>'+val+'</b></div>';
+ });
+ html+='<p class="badge">Perfil demonstrativo, não são configurações oficiais confirmadas.</p>';
+ let r=document.getElementById('famousResult');
+ r.innerHTML=html;r.style.display='block';
+ r.scrollIntoView({behavior:'smooth'});
+}
+
+/* VORTEXTRICK */
+const tricks=['Treino de precisão','Acompanhamento de mira','Controle de sensibilidade','Treino de reflexo','Estabilidade de movimento','Prática de mira'];
+const list=document.getElementById('trickList');
+tricks.forEach(name=>{
+ let row=document.createElement('div');row.className='card';
+ row.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><div><b>⚡ '+name+'</b><p>Ferramenta demonstrativa de treinamento.</p></div><input type="checkbox" style="width:25px;height:25px;accent-color:#ff6900"></div>';
+ list.appendChild(row);
+});
+function toggleAll(on){
+ list.querySelectorAll('input').forEach(x=>x.checked=on);
+}
+</script>
+</body>
+  </html>
